@@ -70,7 +70,7 @@ class SplotFrameworkExtraModule extends AbstractModule
         if ($this->container->has('twig')) {
             $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
         }
-        $this->container->get('javascripts')->addAsset('SplotFrameworkExtraModule::databridge.js', 'lib');
+        $this->container->get('javascripts')->addAsset('@SplotFrameworkExtraModule::databridge.js', 'lib');
     }
 
     protected function configureRouterRequest() {
