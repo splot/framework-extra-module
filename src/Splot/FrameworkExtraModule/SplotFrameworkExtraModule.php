@@ -67,10 +67,14 @@ class SplotFrameworkExtraModule extends AbstractModule
     }
 
     public function run() {
-        if ($this->container->has('twig')) {
-            $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
+        if ($this->getConfig()->get('databridge.enable')) {
+            if ($this->container->has('twig') && $this->container->has('databridge')) {
+                $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
+            }
+            if ($this->container->has('javascripts')) {
+                $this->container->get('javascripts')->addAsset('SplotFrameworkExtraModule::databridge.js', 'lib');
+            }
         }
-        $this->container->get('javascripts')->addAsset('@SplotFrameworkExtraModule::databridge.js', 'lib');
     }
 
     protected function configureRouterRequest() {
