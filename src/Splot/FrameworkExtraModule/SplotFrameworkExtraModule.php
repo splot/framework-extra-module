@@ -16,6 +16,8 @@ use Splot\Framework\Events\ControllerWillRespond;
 use Splot\Framework\Events\DidReceiveRequest;
 use Splot\Framework\HTTP\Request;
 
+use Splot\TwigModule\SplotTwigModule;
+
 use Splot\FrameworkExtraModule\Ajax\Ajax;
 use Splot\FrameworkExtraModule\Ajax\ControllerAccess;
 use Splot\FrameworkExtraModule\Ajax\JsonTransformer;
@@ -29,6 +31,12 @@ use Splot\FrameworkExtraModule\Mailer\BackgroundMailer;
 
 class SplotFrameworkExtraModule extends AbstractModule
 {
+
+    public function loadModules() {
+        return array(
+            new SplotTwigModule()
+        );
+    }
 
     public function configure() {
         parent::configure();
@@ -59,7 +67,9 @@ class SplotFrameworkExtraModule extends AbstractModule
     }
 
     public function run() {
-        $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
+        if ($this->container->has('twig')) {
+            $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
+        }
         $this->container->get('javascripts')->addAsset('SplotFrameworkExtraModule::databridge.js', 'lib');
     }
 
