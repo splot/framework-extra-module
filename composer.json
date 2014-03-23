@@ -1,0 +1,36 @@
+{
+    "name": "splot/framework-extra-module",
+    "description": "Extra functionalities for Splot Framework",
+    "keywords": ["ajax", "databridge", "filestorage", "form", "imaging", "mailer"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michał Dudek",
+            "email": "michal@michaldudek.pl"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "psr/log": "1.0.*",
+        "swiftmailer/swiftmailer": "5.1.*@dev",
+        "gregwar/image": "~2.0",
+        "michaldudek/foundation": "dev-master",
+        "splot/framework": "dev-master",
+        "splot/twig-module": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { 
+            "Splot\\FrameworkExtraModule\\Tests": "tests/",
+            "Splot\\FrameworkExtraModule": "src/"
+        }
+    }
+}

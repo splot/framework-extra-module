@@ -1,4 +1,4 @@
-framework-extra-module
-======================
+Splot FrameworkExtra Module
+==============
 
-Splot Framework extra functionalities.
+Extra functionalities for Splot Framework
