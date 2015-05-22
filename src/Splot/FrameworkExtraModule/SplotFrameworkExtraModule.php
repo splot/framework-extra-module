@@ -50,6 +50,7 @@ class SplotFrameworkExtraModule extends AbstractModule
         }
 
         $this->configureRequestInjector();
+        $this->configureProcess();
 
         // go through all plugins enable settings and run initialization methods for active ones
         foreach(array(
@@ -75,6 +76,10 @@ class SplotFrameworkExtraModule extends AbstractModule
                 $this->container->get('javascripts')->addAsset('SplotFrameworkExtraModule::databridge.js', 'lib');
             }
         }
+    }
+
+    protected function configureProcess() {
+        $this->container->register('process', 'Splot\FrameworkExtraModule\Process\Process');
     }
 
     protected function configureRouterRequest() {
