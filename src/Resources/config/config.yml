@@ -1,0 +1,40 @@
+ajax:
+    enable: true
+    json:
+        enable: true
+        http_code_key: __code
+    controller_access:
+        enable: true
+
+databridge:
+    enable: true
+
+imaging:
+    enable: true
+
+filestorage:
+    simple:
+        enable: true
+        web: true
+        dir: filestorage/
+
+form:
+    simple_handler:
+        enable: true
+
+router:
+    use_request: true
+
+mailer:
+    enable: true
+    use_worker: false
+    from: no-reply@localhost.dev
+    force_to: ~
+    bcc: ~
+    transport: mail
+    sendmail_cmd: /usr/sbin/exim -bs
+    smtp_host: ~
+    smtp_port: 25
+    smtp_encrypt: ~
+    smtp_username: ~
+    smtp_passowrd: ~
