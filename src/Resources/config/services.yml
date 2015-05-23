@@ -1,0 +1,3 @@
+services:
+
+    process: Splot\FrameworkExtraModule\Process\Process
