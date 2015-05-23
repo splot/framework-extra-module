@@ -46,15 +46,15 @@ class RouterRequestConfigurator
         $port = $request->getPort();
 
         if (!empty($protocol)) {
-            $router->setProtocol($protocol);
+            $this->router->setProtocol($protocol);
         }
 
         if (!empty($host)) {
-            $router->setHost($host);
+            $this->router->setHost($host);
         }
 
         if (!empty($port)) {
-            $router->setPort($port);
+            $this->router->setPort($port);
         }
     }
 
