@@ -1,0 +1,8 @@
+services:
+
+    router.request_configurator:
+        class: Splot\FrameworkExtraModule\Router\RouterRequestConfigurator
+        arguments:
+            - @router
+        notify:
+            - ["@event_manager", "subscribeService", ["%event.request%", "@=", "onRequest"]]

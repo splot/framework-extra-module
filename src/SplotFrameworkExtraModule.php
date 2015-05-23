@@ -44,7 +44,7 @@ class SplotFrameworkExtraModule extends AbstractModule
 
         // get protocol, hostname and port number from request to use in router
         if ($config->get('router.use_request')) {
-            $this->configureRouterRequest();
+            $this->configureRouterRequestConfigurator();
         }
 
         $this->configureRequestInjector();
@@ -75,28 +75,12 @@ class SplotFrameworkExtraModule extends AbstractModule
         }
     }
 
-    protected function configureRouterRequest() {
-        $container = $this->container;
-        $this->container->get('event_manager')->subscribe(DidReceiveRequest::getName(), function($event) use ($container) {
-            $router = $container->get('router');
+    /**************************************
+     * CONFIGURATORS
+     **************************************/
 
-            $request = $event->getRequest();
-            $protocol = $request->getScheme();
-            $host = $request->getHost();
-            $port = $request->getPort();
-
-            if (!empty($protocol)) {
-                $router->setProtocol($protocol);
-            }
-
-            if (!empty($host)) {
-                $router->setHost($host);
-            }
-
-            if (!empty($port)) {
-                $router->setPort($port);
-            }
-        });
+    protected function configureRouterRequestConfigurator() {
+        $this->container->loadFromFile($this->getConfigDir() .'/services/router.request.yml');
     }
 
     protected function configureRequestInjector() {
