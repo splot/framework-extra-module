@@ -44,6 +44,8 @@ class SplotFrameworkExtraModule extends AbstractModule
 
         // copy some params from config to container
         $this->container->setParameter('form.simple_handler.http_code_key', $config->get('ajax.json.http_code_key'));
+        $this->container->setParameter('filestorage.simple.parent_dir', $config->get('filestorage.simple.web') ? '%web_dir%' : '%root_dir%');
+        $this->container->setParameter('filestorage.simple.dir', $config->get('filestorage.simple.dir'));
 
         if ($config->get('router.use_request')) {
             $this->configureRouterRequestConfigurator();
@@ -53,8 +55,7 @@ class SplotFrameworkExtraModule extends AbstractModule
         foreach(array(
             'ajax.enable' => 'configureAjax',
             'databridge.enable' => 'configureDataBridge',
-            'mailer.enable' => 'configureMailer',
-            'filestorage.simple.enable' => 'configureSimpleFileStorage'
+            'mailer.enable' => 'configureMailer'
         ) as $option => $configureMethod) {
             if ($config->get($option)) {
                 call_user_func_array(array($this, $configureMethod), array());
@@ -91,18 +92,6 @@ class SplotFrameworkExtraModule extends AbstractModule
         $this->container->register('mailer', array(
             'alias' => $config->get('mailer.use_worker') ? 'mailer.background' : 'mailer.foreground'
         ));
-    }
-
-    protected function configureSimpleFileStorage() {
-        $config = $this->getConfig();
-
-        $this->container->set('filestorage.simple', function($c) use ($config) {
-            return new SimpleStorage(
-                $c->get('filesystem'),
-                $config->get('filestorage.simple.web') ? $c->getParameter('web_dir') : $c->getParameter('root_dir'),
-                $config->get('filestorage.simple.dir')
-            );
-        });
     }
 
 }

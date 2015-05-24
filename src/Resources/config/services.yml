@@ -1,5 +1,9 @@
 parameters:
+
     form.simple_handler.http_code_key: __code
+
+    filestorage.simple.parent_dir: %web_dir%
+    filestorage.simple.dir: /filestorage/
 
 services:
 
@@ -19,3 +23,10 @@ services:
         arguments:
             - @knit
             - %form.simple_handler.http_code_key%
+
+    filestorage.simple:
+        class: Splot\FrameworkExtraModule\FileStorage\SimpleStorage
+        arguments:
+            - @filesystem
+            - %filestorage.simple.parent_dir%
+            - %filestorage.simple.dir%
