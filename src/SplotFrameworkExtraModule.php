@@ -61,17 +61,6 @@ class SplotFrameworkExtraModule extends AbstractModule
         }
     }
 
-    public function run() {
-        if ($this->getConfig()->get('databridge.enable')) {
-            if ($this->container->has('twig') && $this->container->has('databridge')) {
-                $this->container->get('twig')->addExtension(new DataBridgeExtension($this->container->get('databridge')));
-            }
-            if ($this->container->has('javascripts')) {
-                $this->container->get('javascripts')->addAsset('SplotFrameworkExtraModule::databridge.js', 'lib');
-            }
-        }
-    }
-
     /**************************************
      * CONFIGURATORS
      **************************************/
@@ -89,9 +78,7 @@ class SplotFrameworkExtraModule extends AbstractModule
     }
 
     protected function configureDataBridge() {
-        $this->container->set('databridge', function($c) {
-            return new DataBridge();
-        });
+        $this->container->loadFromFile($this->getConfigDir() .'/services/databridge.yml');
     }
 
     protected function configureImaging() {

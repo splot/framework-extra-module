@@ -1,0 +1,13 @@
+services:
+
+    databridge:
+        class: Splot\FrameworkExtraModule\DataBridge\DataBridge
+        notify:
+            - ["@javascripts", "addAsset", ["SplotFrameworkExtraModule::databridge.js", "lib"]]
+
+    databridge.twig_extension:
+        class: Splot\FrameworkExtraModule\DataBridge\Twig\DataBridgeExtension
+        arguments:
+            - @databridge
+        notify:
+            - ["@twig", "addExtension", ["@"]]
