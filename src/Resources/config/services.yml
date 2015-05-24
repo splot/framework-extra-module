@@ -1,3 +1,11 @@
 services:
 
     process: Splot\FrameworkExtraModule\Process\Process
+
+    controller.request_injector:
+        class: Splot\FrameworkExtraModule\Controller\RequestInjector
+        arguments:
+            - @router
+            - @request
+        notify:
+            - ["@event_manager", "subscribeService", ["%event.controller_will_respond%", "@=", "injectRequest"]]

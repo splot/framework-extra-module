@@ -47,8 +47,6 @@ class SplotFrameworkExtraModule extends AbstractModule
             $this->configureRouterRequestConfigurator();
         }
 
-        $this->configureRequestInjector();
-
         // go through all plugins enable settings and run initialization methods for active ones
         foreach(array(
             'ajax.enable' => 'configureAjax',
@@ -81,37 +79,6 @@ class SplotFrameworkExtraModule extends AbstractModule
 
     protected function configureRouterRequestConfigurator() {
         $this->container->loadFromFile($this->getConfigDir() .'/services/router.request.yml');
-    }
-
-    protected function configureRequestInjector() {
-        $container = $this->container;
-        $this->container->get('event_manager')->subscribe(ControllerWillRespond::getName(), function($event) use ($container) {
-            $router = $container->get('router');
-            $route = $router->getRoute($event->getControllerName());
-            $arguments = $event->getArguments();
-            $methodName = $event->getMethod();
-
-            // find the method's meta data
-            $method = array();
-            foreach($route->getMethods() as $methodInfo) {
-                if ($methodInfo['method'] === $methodName) {
-                    $method = $methodInfo;
-                    break;
-                }
-            }
-
-            foreach($method['params'] as $i => $param) {
-                if ($param['class'] && Debugger::isExtending($param['class'], Request::__class(), true) && !($arguments[$i] instanceof Request)) {
-                    try {
-                        $arguments[$i] = $container->get('request');
-                    } catch(NotFoundException $e) {
-                        throw new \RuntimeException('Could not inject Request object into controller\'s method, because it is not executed in web request context.', 0, $e);
-                    }
-                }
-            }
-
-            $event->setArguments($arguments);
-        });
     }
 
     /**
