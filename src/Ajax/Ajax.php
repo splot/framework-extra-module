@@ -1,8 +1,6 @@
 <?php
 namespace Splot\FrameworkExtraModule\Ajax;
 
-use Splot\EventManager\EventManager;
-
 use Splot\Framework\Events\ControllerDidRespond;
 use Splot\Framework\Events\DidFindRouteForRequest;
 
@@ -11,8 +9,6 @@ use Splot\FrameworkExtraModule\Ajax\JsonTransformer;
 
 class Ajax
 {
-
-    protected $eventManager;
 
     protected $jsonTransformer;
 
@@ -23,30 +19,26 @@ class Ajax
     protected $enableControllerAccess = true;
 
     public function __construct(
-        EventManager $eventManager,
         JsonTransformer $jsonTransformer,
         $enableJsonTransformer = true,
         ControllerAccess $controllerAccess,
         $enableControllerAccess = true
     ) {
-        $this->eventManager = $eventManager;
         $this->jsonTransformer = $jsonTransformer;
         $this->enableJsonTransformer = $enableJsonTransformer;
         $this->controllerAccess = $controllerAccess;
         $this->enableControllerAccess = $enableControllerAccess;
     }
 
-    public function init() {
-        $self = $this;
+    public function responseToJson(ControllerDidRespond $event) {
+        if ($this->enableJsonTransformer) {
+            return $this->jsonTransformer->onControllerDidRespond($event);
+        }
+    }
 
-        $this->eventManager->subscribe(ControllerDidRespond::getName(), function($event) use ($self) {
-            return $self->enableJsonTransformer ? $self->jsonTransformer->onControllerDidRespond($event) : null;
-        }, 1024);
-
+    public function checkControllerAccess(DidFindRouteForRequest $event) {
         if ($this->enableControllerAccess) {
-            $this->eventManager->subscribe(DidFindRouteForRequest::getName(), function($event) use ($self) {
-                return $self->controllerAccess->onDidFindRouteForRequest($event);
-            });
+            return $this->controllerAccess->onDidFindRouteForRequest($event);
         }
     }
 

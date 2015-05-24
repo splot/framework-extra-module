@@ -1,0 +1,25 @@
+parameters:
+    ajax.json_transformer.enable: true
+    ajax.json_transformer.http_code_key: __code
+    ajax.controller_access.enable: true
+
+services:
+
+    ajax:
+        class: Splot\FrameworkExtraModule\Ajax\Ajax
+        arguments:
+            - @ajax.json_transformer
+            - %ajax.json_transformer.enable%
+            - @ajax.controller_access
+            - %ajax.controller_access.enable%
+        notify:
+            - ["@event_manager", "subscribeService", ["%event.controller_response%", "@=", "responseToJson", 1024]]
+            - ["@event_manager", "subscribeService", ["%event.route", "@=", "checkControllerAccess"]]
+
+    ajax.json_transformer:
+        class: Splot\FrameworkExtraModule\Ajax\JsonTransformer
+        arguments:
+            - %ajax.json_transformer.http_code_key%
+
+    ajax.controller_access:
+        class: Splot\FrameworkExtraModule\Ajax\ControllerAccess

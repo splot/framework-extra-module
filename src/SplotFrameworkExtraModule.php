@@ -42,7 +42,6 @@ class SplotFrameworkExtraModule extends AbstractModule
         $config = $this->getConfig();
         $container = $this->getContainer();
 
-        // get protocol, hostname and port number from request to use in router
         if ($config->get('router.use_request')) {
             $this->configureRouterRequestConfigurator();
         }
@@ -81,29 +80,12 @@ class SplotFrameworkExtraModule extends AbstractModule
         $this->container->loadFromFile($this->getConfigDir() .'/services/router.request.yml');
     }
 
-    /**
-     * Transform controller responses that are arrays to JSON format for AJAX requests.
-     */
     protected function configureAjax() {
         $config = $this->getConfig();
-
-        $this->container->set('ajax', function($c) use ($config) {
-            return new Ajax(
-                $c->get('event_manager'),
-                $c->get('ajax.json_transformer'), $config->get('ajax.json.enable'),
-                $c->get('ajax.controller_access'), $config->get('ajax.controller_access.enable')
-            );
-        });
-
-        $this->container->set('ajax.json_transformer', function($c) use ($config) {
-            return new JsonTransformer($config->get('ajax.json.http_code_key'));
-        });
-
-        $this->container->set('ajax.controller_access', function($c) use ($config) {
-            return new ControllerAccess();
-        });
-
-        $this->container->get('ajax')->init();
+        $this->container->loadFromFile($this->getConfigDir() .'/services/ajax.yml');
+        $this->container->setParameter('ajax.json_transformer.enable', $config->get('ajax.json.enable'));
+        $this->container->setParameter('ajax.json_transformer.http_code_key', $config->get('ajax.json.http_code_key'));
+        $this->container->setParameter('ajax.controller_access.enable', $config->get('ajax.controller_access.enable'));
     }
 
     protected function configureDataBridge() {
