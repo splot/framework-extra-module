@@ -47,19 +47,22 @@ class SplotFrameworkExtraModule extends AbstractModule
         $this->container->setParameter('filestorage.simple.parent_dir', $config->get('filestorage.simple.web') ? '%web_dir%' : '%root_dir%');
         $this->container->setParameter('filestorage.simple.dir', $config->get('filestorage.simple.dir'));
 
+        // conditional configurations
+
         if ($config->get('router.use_request')) {
             $this->configureRouterRequestConfigurator();
         }
 
-        // go through all plugins enable settings and run initialization methods for active ones
-        foreach(array(
-            'ajax.enable' => 'configureAjax',
-            'databridge.enable' => 'configureDataBridge',
-            'mailer.enable' => 'configureMailer'
-        ) as $option => $configureMethod) {
-            if ($config->get($option)) {
-                call_user_func_array(array($this, $configureMethod), array());
-            }
+        if ($config->get('ajax.enable')) {
+            $this->configureAjax();
+        }
+
+        if ($config->get('databridge.enable')) {
+            $this->configureDataBridge();
+        }
+
+        if ($config->get('mailer.enable')) {
+            $this->configureMailer();
         }
     }
 
