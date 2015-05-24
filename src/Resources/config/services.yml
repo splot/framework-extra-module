@@ -4,6 +4,7 @@ parameters:
 services:
 
     process: Splot\FrameworkExtraModule\Process\Process
+    imaging: Splot\FrameworkExtraModule\Imaging\Imaging
 
     controller.request_injector:
         class: Splot\FrameworkExtraModule\Controller\RequestInjector

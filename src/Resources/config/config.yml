@@ -9,9 +9,6 @@ ajax:
 databridge:
     enable: true
 
-imaging:
-    enable: true
-
 filestorage:
     simple:
         enable: true
@@ -33,4 +30,4 @@ mailer:
     smtp_port: 25
     smtp_encrypt: ~
     smtp_username: ~
-    smtp_passowrd: ~
+    smtp_password: ~

@@ -53,7 +53,6 @@ class SplotFrameworkExtraModule extends AbstractModule
         foreach(array(
             'ajax.enable' => 'configureAjax',
             'databridge.enable' => 'configureDataBridge',
-            'imaging.enable' => 'configureImaging',
             'mailer.enable' => 'configureMailer',
             'filestorage.simple.enable' => 'configureSimpleFileStorage'
         ) as $option => $configureMethod) {
@@ -81,12 +80,6 @@ class SplotFrameworkExtraModule extends AbstractModule
 
     protected function configureDataBridge() {
         $this->container->loadFromFile($this->getConfigDir() .'/services/databridge.yml');
-    }
-
-    protected function configureImaging() {
-        $this->container->set('imaging', function($c) {
-            return new Imaging();
-        });
     }
 
     protected function configureMailer() {
