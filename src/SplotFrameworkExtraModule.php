@@ -42,6 +42,9 @@ class SplotFrameworkExtraModule extends AbstractModule
         $config = $this->getConfig();
         $container = $this->getContainer();
 
+        // copy some params from config to container
+        $this->container->setParameter('form.simple_handler.http_code_key', $config->get('ajax.json.http_code_key'));
+
         if ($config->get('router.use_request')) {
             $this->configureRouterRequestConfigurator();
         }
@@ -50,7 +53,6 @@ class SplotFrameworkExtraModule extends AbstractModule
         foreach(array(
             'ajax.enable' => 'configureAjax',
             'databridge.enable' => 'configureDataBridge',
-            'form.simple_handler.enable' => 'configureFormSimpleHandler',
             'imaging.enable' => 'configureImaging',
             'mailer.enable' => 'configureMailer',
             'filestorage.simple.enable' => 'configureSimpleFileStorage'
@@ -79,12 +81,6 @@ class SplotFrameworkExtraModule extends AbstractModule
 
     protected function configureDataBridge() {
         $this->container->loadFromFile($this->getConfigDir() .'/services/databridge.yml');
-    }
-
-    protected function configureFormSimpleHandler() {
-        $config = $this->getConfig();
-        $this->container->loadFromFile($this->getConfigDir() .'/services/form.simple_handler.yml');
-        $this->container->setParameter('form.simple_handler.http_code_key', $config->get('ajax.json.http_code_key'));
     }
 
     protected function configureImaging() {

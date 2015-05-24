@@ -1,3 +1,6 @@
+parameters:
+    form.simple_handler.http_code_key: __code
+
 services:
 
     process: Splot\FrameworkExtraModule\Process\Process
@@ -9,3 +12,9 @@ services:
             - @request
         notify:
             - ["@event_manager", "subscribeService", ["%event.controller_will_respond%", "@=", "injectRequest"]]
+
+    form.simple_handler:
+        class: Splot\FrameworkExtraModule\Form\SimpleHandler
+        arguments:
+            - @knit
+            - %form.simple_handler.http_code_key%

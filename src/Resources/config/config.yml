@@ -18,10 +18,6 @@ filestorage:
         web: true
         dir: filestorage/
 
-form:
-    simple_handler:
-        enable: true
-
 router:
     use_request: true
 
