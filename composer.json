@@ -15,7 +15,7 @@
         "swiftmailer/swiftmailer": "5.1.*@dev",
         "gregwar/image": "~2.0",
         "michaldudek/foundation": ">=0.9,<2.0",
-        "splot/framework": ">=0.8",
+        "splot/framework": ">=0.8,<0.9",
         "splot/twig-module": ">=0.8"
     },
     "require-dev": {
