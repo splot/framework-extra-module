@@ -81,17 +81,15 @@ class SplotFrameworkExtraModule extends AbstractModule
         $this->container->loadFromFile($this->getConfigDir() .'/services/databridge.yml');
     }
 
+    protected function configureFormSimpleHandler() {
+        $config = $this->getConfig();
+        $this->container->loadFromFile($this->getConfigDir() .'/services/form.simple_handler.yml');
+        $this->container->setParameter('form.simple_handler.http_code_key', $config->get('ajax.json.http_code_key'));
+    }
+
     protected function configureImaging() {
         $this->container->set('imaging', function($c) {
             return new Imaging();
-        });
-    }
-
-    protected function configureFormSimpleHandler() {
-        $config = $this->getConfig();
-
-        $this->container->set('form.simple_handler', function($c) use ($config) {
-            return new SimpleHandler($c->get('knit'), $config->get('ajax.json.http_code_key'));
         });
     }
 
