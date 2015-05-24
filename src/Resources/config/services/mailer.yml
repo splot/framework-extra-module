@@ -1,0 +1,35 @@
+parameters:
+
+    mailer.config:
+        from: no-reply@localhost.dev
+        force_to: ~
+        bcc: ~
+        transport: mail
+        sendmail_cmd: /usr/sbin/exim -bs
+        smtp_host: ~
+        smtp_port: 25
+        smtp_encrypt: ~
+        smtp_username: ~
+        smtp_password: ~
+
+services:
+
+    mailer.logger:
+        factory: ["logger_provider", "provide", ["Mailer"]]
+
+    mailer.foreground:
+        class: Splot\FrameworkExtraModule\Mailer\Mailer
+        arguments:
+            - @resource_finder
+            - @twig
+            - @mailer.logger
+            - %mailer.config%
+
+    mailer.background:
+        class: Splot\FrameworkExtraModule\Mailer\BackgroundMailer
+        arguments:
+            - @resource_finder
+            - @twig
+            - @mailer.logger
+            - %mailer.config%
+            - @work_queue

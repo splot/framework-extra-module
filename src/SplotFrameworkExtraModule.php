@@ -84,30 +84,13 @@ class SplotFrameworkExtraModule extends AbstractModule
 
     protected function configureMailer() {
         $config = $this->getConfig();
-
-        $useBackgroundMailer = $config->get('mailer.use_worker');
-        $mailer_id = $useBackgroundMailer ? 'mailer.foreground' : 'mailer';
-
-        $this->container->set($mailer_id, function($c) use ($config) {
-            return new Mailer(
-                $c->get('resource_finder'),
-                $c->get('twig'),
-                $c->get('logger_provider')->provide('Mailer'),
-                $config->get('mailer')
-            );
-        });
-
-        if ($useBackgroundMailer) {
-            $this->container->set('mailer', function($c) use ($config) {
-                return new BackgroundMailer(
-                    $c->get('resource_finder'),
-                    $c->get('twig'),
-                    $c->get('logger_provider')->provide('Mailer'),
-                    $config->get('mailer'),
-                    $c->get('work_queue')
-                );
-            });
-        }
+        $this->container->loadFromFile($this->getConfigDir() .'/services/mailer.yml');
+        $this->container->setParameter('mailer.config', $config->get('mailer'));
+        
+        // and register @mailer as an alias to proper mailer
+        $this->container->register('mailer', array(
+            'alias' => $config->get('mailer.use_worker') ? 'mailer.background' : 'mailer.foreground'
+        ));
     }
 
     protected function configureSimpleFileStorage() {
