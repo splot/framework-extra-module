@@ -30,7 +30,7 @@ use Splot\FrameworkExtraModule\Mailer\BackgroundMailer;
 class SplotFrameworkExtraModule extends AbstractModule
 {
 
-    public function loadModules() {
+    public function loadModules($env, $debug) {
         return array(
             new SplotTwigModule()
         );
