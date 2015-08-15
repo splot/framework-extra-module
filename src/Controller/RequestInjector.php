@@ -66,7 +66,7 @@ class RequestInjector
         $arguments = $event->getArguments();
 
         foreach($method['params'] as $i => $param) {
-            if ($param['class'] && Debugger::isExtending($param['class'], Request::__class(), true) && !($arguments[$i] instanceof Request)) {
+            if ($param['class'] && Debugger::isExtending($param['class'], Request::class, true) && !($arguments[$i] instanceof Request)) {
                 $arguments[$i] = $this->request;
             }
         }
