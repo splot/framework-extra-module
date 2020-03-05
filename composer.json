@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.5",
-        "psr/log": "1.0.*",
+        "psr/log": ">=1.0,<2.0",
         "swiftmailer/swiftmailer": ">=5.1,<6.0",
         "gregwar/image": "~2.0",
         "michaldudek/foundation": ">=0.9,<2.0",
